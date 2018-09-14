@@ -13,7 +13,8 @@ Introduction
     :target: https://travis-ci.org/adafruit/Adafruit_CircuitPython_HTU21D
     :alt: Build Status
 
-.. todo:: Describe what the library does.
+This driver enables you to use the Adafruit HTU21D-F temperature and
+humidity breakout with CircuitPyton.
 
 Dependencies
 =============
@@ -30,7 +31,22 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-.. todo:: Add a quick, simple example. It and other examples should live in the examples folder and be included in docs/examples.rst.
+.. codeblock:: python
+
+    import time
+    import board
+    import busio
+    from adafruit_htu21d import HTU21D
+
+    # Create library object using our Bus I2C port
+    i2c = busio.I2C(board.SCL, board.SDA)
+    sensor = HTU21D(i2c)
+
+
+    while True:
+        print("\nTemperature: %0.1f C" % sensor.temperature)
+        print("Humidity: %0.1f %%" % sensor.relative_humidity)
+        time.sleep(2)
 
 Contributing
 ============

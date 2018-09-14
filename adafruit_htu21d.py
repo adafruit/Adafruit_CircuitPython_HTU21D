@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-`Adafruit_HTU21D`
+`adafruit_HTU21D`
 ====================================================
 
 This is a breakout for the Adafruit HTU21D-F humidity sensor breakout.
@@ -95,17 +95,15 @@ class HTU21D:
 
     def _data(self):
         data = bytearray(3)
-        data[0] = 0xff
         while True:
             # While busy, the sensor doesn't respond to reads.
             try:
                 with self.i2c_device as i2c:
                     i2c.readinto(data)
+                    if data[0] != 0xff:  # Check if read succeeded.
+                        break
             except OSError:
                 pass
-            else:
-                if data[0] != 0xff:  # Check if read succeeded.
-                    break
         value, checksum = struct.unpack('>HB', data)
         if checksum != _crc(data[:2]):
             raise ValueError("CRC mismatch")
@@ -114,20 +112,18 @@ class HTU21D:
     @property
     def relative_humidity(self):
         """The measured relative humidity in percent."""
-        self.start_measurement(HUMIDITY)
-        value = self._data()
+        self.measurement(HUMIDITY)
         self._measurement = 0
-        return value * 125.0 / 65536.0 - 6.0
+        return self._data() * 125.0 / 65536.0 - 6.0
 
     @property
     def temperature(self):
         """The measured temperature in degrees Celcius."""
-        self.start_measurement(TEMPERATURE)
-        value = self._data()
+        self.measurement(TEMPERATURE)
         self._measurement = 0
-        return value * 175.72 / 65536.0 - 46.85
+        return self._data() * 175.72 / 65536.0 - 46.85
 
-    def start_measurement(self, what):
+    def measurement(self, what):
         """
         Starts a measurement.
         Starts a measurement of either ``HUMIDITY`` or ``TEMPERATURE``
