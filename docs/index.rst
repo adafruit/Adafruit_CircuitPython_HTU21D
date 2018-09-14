@@ -28,8 +28,7 @@ Table of Contents
 .. toctree::
     :caption: Related Products
 
-    Adafruit HTU21D-F Temperature & Humidity Sensor
-    <https://www.adafruit.com/product/1899>
+    Adafruit HTU21D-F Temperature & Humidity Sensor <https://www.adafruit.com/product/1899>
 
 .. toctree::
     :caption: Other Links
