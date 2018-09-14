@@ -31,7 +31,7 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-.. codeblock:: python
+.. code:: python
 
     import time
     import board
