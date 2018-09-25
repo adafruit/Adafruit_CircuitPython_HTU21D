@@ -43,8 +43,6 @@ Implementation Notes
 
 * Adafruit's Bus Device library:
   https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
-* Adafruit's Register library:
-  https://github.com/adafruit/Adafruit_CircuitPython_Register
 """
 try:
     import struct

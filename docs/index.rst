@@ -23,7 +23,7 @@ Table of Contents
 .. toctree::
     :caption: Tutorials
 
-    https://learn.adafruit.com/adafruit-htu21d-f-temperature-humidity-sensor/
+    Adafruit HTU21D-F Temperature & Humidity Sensor <https://learn.adafruit.com/adafruit-htu21d-f-temperature-humidity-sensor/>
 
 .. toctree::
     :caption: Related Products
