@@ -9,8 +9,8 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-.. image:: https://travis-ci.org/adafruit/Adafruit_CircuitPython_HTU21D.svg?branch=master
-    :target: https://travis-ci.org/adafruit/Adafruit_CircuitPython_HTU21D
+.. image:: https://travis-ci.com/adafruit/Adafruit_CircuitPython_HTU21D.svg?branch=master
+    :target: https://travis-ci.com/adafruit/Adafruit_CircuitPython_HTU21D
     :alt: Build Status
 
 This driver enables you to use the Adafruit HTU21D-F temperature and
