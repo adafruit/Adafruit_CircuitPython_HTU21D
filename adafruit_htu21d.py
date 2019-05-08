@@ -49,6 +49,7 @@ try:
 except ImportError:
     import ustruct as struct
 
+import time
 from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
 
@@ -87,6 +88,7 @@ class HTU21D:
         self.i2c_device = I2CDevice(i2c_bus, address)
         self._command(_RESET)
         self._measurement = 0
+        time.sleep(0.01)
 
     def _command(self, command):
         with self.i2c_device as i2c:
