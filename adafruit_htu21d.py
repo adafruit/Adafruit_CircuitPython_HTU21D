@@ -52,6 +52,8 @@ except ImportError:
 from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
 
+import time
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HTU21D.git"
 
@@ -87,6 +89,7 @@ class HTU21D:
         self.i2c_device = I2CDevice(i2c_bus, address)
         self._command(_RESET)
         self._measurement = 0
+        time.sleep(0.01)
 
     def _command(self, command):
         with self.i2c_device as i2c:
