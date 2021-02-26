@@ -97,6 +97,7 @@ class HTU21D:
         """The measured relative humidity in percent."""
         self.measurement(HUMIDITY)
         self._measurement = 0
+        time.sleep(0.016)
         return self._data() * 125.0 / 65536.0 - 6.0
 
     @property
@@ -104,6 +105,7 @@ class HTU21D:
         """The measured temperature in degrees Celcius."""
         self.measurement(TEMPERATURE)
         self._measurement = 0
+        time.sleep(0.050)
         return self._data() * 175.72 / 65536.0 - 46.85
 
     def measurement(self, what):
