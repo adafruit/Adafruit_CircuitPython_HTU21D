@@ -6,7 +6,8 @@
 `adafruit_htu21d`
 ====================================================
 
-This is a breakout for the Adafruit HTU21D-F humidity sensor breakout.
+This is a breakout for the Adafruit HTU21D-F Temperature & Humidity
+Sensor Breakout Board
 
 * Author(s): ktown
 
@@ -61,9 +62,38 @@ def _crc(data):
 class HTU21D:
     """
     A driver for the HTU21D-F temperature and humidity sensor.
-    :param i2c_bus: The `busio.I2C` object to use. This is the only
-    required parameter.
-    :param int address: (optional) The I2C address of the device.
+
+    :param i2c_bus: The `busio.I2C` object to use. This is the only required parameter.
+    :param int address: (optional) The I2C address of the device. Defaults to :const:`0x40`
+
+
+    **Quickstart: Importing and using the HTU21D temperature sensor**
+
+        Here is one way of importing the `HTU21D` class so you can use it with the name ``htu``.
+        First you will need to import the libraries to use the sensor
+
+        .. code-block:: python
+
+            import busio
+            import board
+            import adafruit_htu21d
+
+        Once this is done you can define your `busio.I2C` object and define your sensor object
+
+        .. code-block:: python
+
+            i2c = busio.I2C(board.SCL, board.SDA)
+            htu = adafruit_htu21d.HTU21D(i2c)
+
+        Now you have access to the temperature and humidity using
+        the :attr:`temperature` and :attr:`relative_humidity` attributes
+
+        .. code-block:: python
+
+            temperature = htu.temperature
+            relative_humidity = htu.relative_humidity
+
+
     """
 
     def __init__(self, i2c_bus, address=0x40):
@@ -102,7 +132,7 @@ class HTU21D:
 
     @property
     def temperature(self):
-        """The measured temperature in degrees Celcius."""
+        """The measured temperature in degrees Celsius."""
         self.measurement(TEMPERATURE)
         self._measurement = 0
         time.sleep(0.050)
@@ -114,7 +144,7 @@ class HTU21D:
         Starts a measurement of either ``HUMIDITY`` or ``TEMPERATURE``
         depending on the ``what`` argument. Returns immediately, and the
         result of the measurement can be retrieved with the
-        ``temperature`` and ``relative_humidity`` properties. This way it
+        :attr:`temperature` and :attr:`relative_humidity` properties. This way it
         will take much less time.
         This can be useful if you want to start the measurement, but don't
         want the call to block until the measurement is ready -- for instance,
