@@ -16,16 +16,17 @@ Implementation Notes
 
 **Hardware:**
 
-* Adafruit `HTU21D-F Temperature & Humidity Sensor Breakout Board
+* `Adafruit HTU21D-F Temperature & Humidity Sensor Breakout Board
   <https://www.adafruit.com/product/1899>`_ (Product ID: 1899)
 
 **Software and Dependencies:**
 
 * Adafruit CircuitPython firmware for the supported boards:
-  https://github.com/adafruit/circuitpython/releases
+  https://circuitpython.org/downloads
 
 * Adafruit's Bus Device library:
   https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
+
 """
 try:
     import struct
@@ -62,36 +63,32 @@ def _crc(data):
 class HTU21D:
     """
     A driver for the HTU21D-F temperature and humidity sensor.
-
-    :param i2c_bus: The `busio.I2C` object to use. This is the only required parameter.
+    :param i2c_bus: The I2C bus the device is connected to
     :param int address: (optional) The I2C address of the device. Defaults to :const:`0x40`
 
+    **Quickstart: Importing and using the HTU21D-F**
 
-    **Quickstart: Importing and using the HTU21D temperature sensor**
-
-        Here is one way of importing the `HTU21D` class so you can use it with the name ``htu``.
+        Here is an example of using the :class:`HTU21D` class.
         First you will need to import the libraries to use the sensor
 
         .. code-block:: python
 
-            import busio
             import board
-            import adafruit_htu21d
+            from adafruit_htu21d import HTU21D
 
-        Once this is done you can define your `busio.I2C` object and define your sensor object
-
-        .. code-block:: python
-
-            i2c = busio.I2C(board.SCL, board.SDA)
-            htu = adafruit_htu21d.HTU21D(i2c)
-
-        Now you have access to the temperature and humidity using
-        the :attr:`temperature` and :attr:`relative_humidity` attributes
+        Once this is done you can define your `board.I2C` object and define your sensor object
 
         .. code-block:: python
 
-            temperature = htu.temperature
-            relative_humidity = htu.relative_humidity
+            i2c = board.I2C()  # uses board.SCL and board.SDA
+            sensor = HTU21D(i2c)
+
+        Now you have access to the :attr:`temperature` and :attr:`relative_humidity` attributes
+
+        .. code-block:: python
+
+            temperature = sensor.temperature
+            relative_humidity = sensor.relative_humidity
 
 
     """
