@@ -43,8 +43,11 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HTU21D.git"
 HUMIDITY = const(0xF5)
 TEMPERATURE = const(0xF3)
 _RESET = const(0xFE)
+_WRITE_USER1 = const(0xE6)
 _READ_USER1 = const(0xE7)
 _USER1_VAL = const(0x3A)
+
+_TEMP_RH_RES = (0, 1, 128, 129)
 
 
 def _crc(data):
@@ -97,6 +100,7 @@ class HTU21D:
         self.i2c_device = I2CDevice(i2c_bus, address)
         self._command(_RESET)
         self._measurement = 0
+        self._buffer = bytearray(3)
         time.sleep(0.01)
 
     def _command(self, command):
@@ -154,3 +158,43 @@ class HTU21D:
         elif self._measurement != what:
             raise RuntimeError("other measurement in progress")
         self._measurement = what
+
+    @property
+    def temp_rh_resolution(self):
+        """The temperature and relative humidity resolution
+
+        Have one of the following values: [#f1]_
+
+            =======  ==============  ==============
+             value       RH res %        T res C
+            =======  ==============  ==============
+               0      0.04 (12bit)    0.01 (14bit)
+               1      0.7  (8bit)     0.04 (12bit)
+               2      0.17 (10bit)    0.02 (13bit)
+               3      0.08 (11bit)    0.08 (11bit)
+            =======  ==============  ==============
+
+
+        .. [#f1] HTU21D(F) RH/T Sensor IC Datasheet. TE connectivity. 2017. p13
+
+        """
+
+        self._buffer[0] = _READ_USER1
+        with self.i2c_device as i2c:
+            i2c.write_then_readinto(self._buffer, self._buffer, out_end=1)
+
+        return self._buffer[0]
+
+    @temp_rh_resolution.setter
+    def temp_rh_resolution(self, value):
+        self._buffer[0] = _READ_USER1
+        with self.i2c_device as i2c:
+            i2c.write_then_readinto(self._buffer, self._buffer, out_end=1)
+
+        register = (self._buffer[0] & 0xFE) | _TEMP_RH_RES[value]
+
+        self._buffer[0] = 0xE6
+        self._buffer[1] = register
+
+        with self.i2c_device as i2c:
+            i2c.write(self._buffer)
