@@ -59,11 +59,10 @@ Usage Example
 
     import time
     import board
-    import busio
     from adafruit_htu21d import HTU21D
 
-    # Create library object using our Bus I2C port
-    i2c = busio.I2C(board.SCL, board.SDA)
+    # Create sensor object, communicating over the board's default I2C bus
+    i2c = board.I2C()  # uses board.SCL and board.SDA
     sensor = HTU21D(i2c)
 
 
