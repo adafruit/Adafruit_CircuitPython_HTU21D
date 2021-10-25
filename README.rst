@@ -71,6 +71,11 @@ Usage Example
         print("Humidity: %0.1f %%" % sensor.relative_humidity)
         time.sleep(2)
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/htu21d/en/latest/>`_.
+
 Contributing
 ============
 
