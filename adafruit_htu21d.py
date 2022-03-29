@@ -38,7 +38,10 @@ __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HTU21D.git"
 
 HUMIDITY = const(0xF5)
+"""Constant command used to measure humidity."""
 TEMPERATURE = const(0xF3)
+"""Constant command used to measure temperature."""
+
 _RESET = const(0xFE)
 _WRITE_USER1 = const(0xE6)
 _READ_USER1 = const(0xE7)
@@ -63,6 +66,7 @@ def _crc(data):
 class HTU21D:
     """
     A driver for the HTU21D-F temperature and humidity sensor.
+
     :param i2c_bus: The I2C bus the device is connected to
     :param int address: (optional) The I2C address of the device. Defaults to :const:`0x40`
 
@@ -147,6 +151,8 @@ class HTU21D:
         This can be useful if you want to start the measurement, but don't
         want the call to block until the measurement is ready -- for instance,
         when you are doing other things at the same time.
+
+        :param int what: What to measure, one of (`HUMIDITY`, `TEMPERATURE`).
         """
         if what not in (HUMIDITY, TEMPERATURE):
             raise ValueError()
