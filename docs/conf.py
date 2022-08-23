@@ -52,8 +52,14 @@ master_doc = "index"
 
 # General information about the project.
 project = "Adafruit HTU21D Library"
+creation_year = "2018"
 current_year = str(datetime.datetime.now().year)
-copyright = current_year + " ktown"
+year_duration = (
+    current_year
+    if current_year == creation_year
+    else creation_year + " - " + current_year
+)
+copyright = year_duration + " ktown"
 author = "ktown"
 
 # The version info for the project you're documenting, acts as replacement for
