@@ -34,6 +34,13 @@ import time
 from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
 
+try:
+    import typing  # pylint: disable=unused-import
+    from typing_extensions import Literal
+    from busio import I2C
+except ImportError:
+    pass
+
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_HTU21D.git"
 
@@ -50,7 +57,7 @@ _USER1_VAL = const(0x3A)
 _TEMP_RH_RES = (0, 1, 128, 129)
 
 
-def _crc(data):
+def _crc(data: bytearray) -> int:
     crc = 0
     for byte in data:
         crc ^= byte
@@ -97,18 +104,18 @@ class HTU21D:
 
     """
 
-    def __init__(self, i2c_bus, address=0x40):
+    def __init__(self, i2c_bus: I2C, address: int = 0x40) -> None:
         self.i2c_device = I2CDevice(i2c_bus, address)
         self._command(_RESET)
         self._measurement = 0
         self._buffer = bytearray(3)
         time.sleep(0.01)
 
-    def _command(self, command):
+    def _command(self, command: int) -> None:
         with self.i2c_device as i2c:
             i2c.write(struct.pack("B", command))
 
-    def _data(self):
+    def _data(self) -> int:
         data = bytearray(3)
         while True:
             # While busy, the sensor doesn't respond to reads.
@@ -125,7 +132,7 @@ class HTU21D:
         return value
 
     @property
-    def relative_humidity(self):
+    def relative_humidity(self) -> float:
         """The measured relative humidity in percent."""
         self.measurement(HUMIDITY)
         self._measurement = 0
@@ -133,14 +140,14 @@ class HTU21D:
         return self._data() * 125.0 / 65536.0 - 6.0
 
     @property
-    def temperature(self):
+    def temperature(self) -> float:
         """The measured temperature in degrees Celsius."""
         self.measurement(TEMPERATURE)
         self._measurement = 0
         time.sleep(0.050)
         return self._data() * 175.72 / 65536.0 - 46.85
 
-    def measurement(self, what):
+    def measurement(self, what: Literal[0xF5, 0xF3]) -> float:
         """
         Starts a measurement.
         Starts a measurement of either ``HUMIDITY`` or ``TEMPERATURE``
@@ -163,7 +170,7 @@ class HTU21D:
         self._measurement = what
 
     @property
-    def temp_rh_resolution(self):
+    def temp_rh_resolution(self) -> int:
         """The temperature and relative humidity resolution
 
         Have one of the following values: [#f1]_
@@ -189,7 +196,7 @@ class HTU21D:
         return self._buffer[0]
 
     @temp_rh_resolution.setter
-    def temp_rh_resolution(self, value):
+    def temp_rh_resolution(self, value: int) -> None:
         self._buffer[0] = _READ_USER1
         with self.i2c_device as i2c:
             i2c.write_then_readinto(self._buffer, self._buffer, out_end=1)
