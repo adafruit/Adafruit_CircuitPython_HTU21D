@@ -15,7 +15,7 @@ from adafruit_htu21d import HTU21D
 main_group = Group()
 # Initialize I2C bus and sensor.
 i2c = board.I2C()  # uses board.SCL and board.SDA
-sensor = HTU21D(i2c)
+htu = HTU21D(i2c)
 
 # Create Label(s) to show the readings. If you have a very small
 # display you may need to change to scale=1.
@@ -37,6 +37,8 @@ board.DISPLAY.root_group = main_group
 # begin main loop
 while True:
     # update the text of the label(s) to show the sensor readings
-    display_output_label.text = f"Temperature:{sensor.temperature:.1f}C\nHumidity:{sensor.relative_humidity:.1f}%\n"
+    display_output_label.text = (
+        f"Temp: {htu.temperature:.1f}C\n Hum: {htu.relative_humidity:.1f}%\n"
+    )
     # wait for a bit
     time.sleep(0.5)
