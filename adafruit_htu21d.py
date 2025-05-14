@@ -28,6 +28,7 @@ Implementation Notes
   https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 
 """
+
 import struct
 import time
 
@@ -35,9 +36,10 @@ from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
 
 try:
-    import typing  # pylint: disable=unused-import
-    from typing_extensions import Literal
+    import typing
+
     from busio import I2C
+    from typing_extensions import Literal
 except ImportError:
     pass
 
@@ -161,7 +163,7 @@ class HTU21D:
 
         :param int what: What to measure, one of (`HUMIDITY`, `TEMPERATURE`).
         """
-        if what not in (HUMIDITY, TEMPERATURE):
+        if what not in {HUMIDITY, TEMPERATURE}:
             raise ValueError()
         if not self._measurement:
             self._command(what)
