@@ -14,6 +14,6 @@ sensor = HTU21D(i2c)
 
 
 while True:
-    print("\nTemperature: %0.1f C" % sensor.temperature)
-    print("Humidity: %0.1f %%" % sensor.relative_humidity)
+    print(f"\nTemperature: {sensor.temperature:0.1f} C")
+    print(f"Humidity: {sensor.relative_humidity:0.1f} %")
     time.sleep(2)
